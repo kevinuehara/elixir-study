@@ -2,3 +2,4 @@
 /cards/deps
 /identicon/_build
 /identicon/deps
+/identicon/*.png
