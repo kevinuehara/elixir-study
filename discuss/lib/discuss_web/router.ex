@@ -1,12 +1,14 @@
 defmodule DiscussWeb.Router do
   use DiscussWeb, :router
 
+  #plug as a function that does a tiny transformation on our connnection object
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug DiscussWeb.Plugs.SetUser
   end
 
   pipeline :api do
@@ -31,8 +33,10 @@ defmodule DiscussWeb.Router do
   scope "/auth", DiscussWeb do
     pipe_through :browser
 
+    get "/signout", AuthController, :signout
     get "/:provider", AuthController, :request # the request function the lib do for us
     get "/:provider/callback", AuthController, :callback
+
   end
 
   # Other scopes may use custom stacks.
